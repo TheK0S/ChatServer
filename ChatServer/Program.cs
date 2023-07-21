@@ -15,7 +15,7 @@ namespace ChatServer
 
         static async Task Main()
         {
-            IPAddress ipAddress = IPAddress.Any;
+            IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
             int port = 8080;
 
             Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -52,7 +52,7 @@ namespace ChatServer
                     string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
                     Console.WriteLine($"Сообщение от клиента {clientId}: {message}");
 
-                    Message msg = JsonConvert.DeserializeObject<Message>(message);
+                    Message? msg = JsonConvert.DeserializeObject<Message>(message);
 
                     if (msg == null) continue;
 
@@ -100,7 +100,7 @@ namespace ChatServer
         }
         static void BroadcastMessageAddUser(string message, Socket ounerSocket)
         {
-            Message msg = JsonConvert.DeserializeObject<Message>(message);
+            Message? msg = JsonConvert.DeserializeObject<Message>(message);
 
             if (msg == null) return;
 
